@@ -1,0 +1,549 @@
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import {
+  FlaskConical,
+  Microscope,
+  ShieldCheck,
+  LineChart,
+  CheckCircle2,
+  Users,
+  Cpu,
+  BookOpenText,
+  Rocket,
+  Building2,
+  Mail,
+  Phone,
+  CalendarCheck2,
+} from "lucide-react";
+
+// Utility components
+const Container = ({ children, className = "" }) => (
+  <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${className}`}>{children}</div>
+);
+
+const SectionTitle = ({ kicker, title, subtitle, align = "center" }) => (
+  <div className={`mb-10 ${align === "center" ? "text-center" : "text-left"}`}>
+    {kicker && (
+      <p className="tracking-wide uppercase text-sm font-semibold text-[#1E9C5C]">{kicker}</p>
+    )}
+    <h2 className="mt-2 text-3xl md:text-4xl font-extrabold text-[#0B1739]">{title}</h2>
+    {subtitle && (
+      <p className="mt-3 text-lg text-slate-600 max-w-3xl mx-auto">{subtitle}</p>
+    )}
+  </div>
+);
+
+const Pill = ({ children }) => (
+  <span className="inline-flex items-center rounded-full bg-[#E8F7F0] text-[#1E9C5C] px-3 py-1 text-sm font-medium">{children}</span>
+);
+
+const PrimaryButton = ({ children, onClick, variant = "green" }) => {
+  const base = "inline-flex items-center justify-center rounded-2xl px-5 py-3 font-semibold shadow-sm transition transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2";
+  const map = {
+    green: `${base} bg-[#1E9C5C] text-white hover:shadow-lg focus:ring-[#1E9C5C]`,
+    blue: `${base} bg-[#1B4B9C] text-white hover:shadow-lg focus:ring-[#1B4B9C]`,
+    white: `${base} bg-white text-[#1B4B9C] border border-slate-200 hover:shadow-lg focus:ring-[#1B4B9C]`,
+    ghost: `${base} bg-transparent text-[#1B4B9C] hover:bg-slate-50`,
+  };
+  return (
+    <button onClick={onClick} className={map[variant]}> {children} </button>
+  );
+};
+
+// NAV + PAGES
+export default function App() {
+  const [route, setRoute] = useState("home");
+
+  const NavLink = ({ id, label }) => (
+    <button
+      onClick={() => setRoute(id)}
+      className={`px-4 py-2 rounded-xl text-sm font-semibold transition ${
+        route === id ? "bg-[#E8F0FB] text-[#1B4B9C]" : "text-slate-600 hover:text-[#1B4B9C]"
+      }`}
+    >
+      {label}
+    </button>
+  );
+
+  return (
+    <div className="min-h-screen bg-white text-slate-900">
+      {/* Top Bar */}
+      <header className="sticky top-0 z-40 backdrop-blur bg-white/80 border-b border-slate-100">
+        <Container className="flex items-center justify-between h-16">
+          <div className="flex items-center gap-3">
+            <div className="h-9 w-9 rounded-2xl bg-gradient-to-br from-[#1E9C5C] to-[#1B4B9C] grid place-items-center">
+              <FlaskConical className="h-5 w-5 text-white" />
+            </div>
+            <div>
+              <span className="block text-sm uppercase tracking-wide text-slate-500">IRSG</span>
+              <span className="block -mt-1 text-lg font-extrabold text-[#0B1739]">RegSci<span className="text-[#1E9C5C]">.com</span></span>
+            </div>
+          </div>
+          <nav className="hidden md:flex items-center gap-1">
+            <NavLink id="home" label="Home" />
+            <NavLink id="services" label="Services" />
+            <NavLink id="regpulse" label="RegPulse" />
+            <NavLink id="insights" label="Insights" />
+            <NavLink id="contact" label="Contact" />
+          </nav>
+          <div className="flex items-center gap-2">
+            <PrimaryButton variant="blue" onClick={() => setRoute("contact")}>Schedule a Consultation</PrimaryButton>
+          </div>
+        </Container>
+      </header>
+
+      {route === "home" && <Home onNavigate={setRoute} />}
+      {route === "services" && <Services onNavigate={setRoute} />}
+      {route === "regpulse" && <RegPulse onNavigate={setRoute} />}
+      {route === "insights" && <Insights onNavigate={setRoute} />}
+      {route === "contact" && <Contact />}
+
+      <Footer />
+    </div>
+  );
+}
+
+// HOME PAGE
+function Home({ onNavigate }) {
+  return (
+    <main>
+      {/* Hero */}
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-white via-[#F5F7FA] to-white" />
+        <Container className="relative py-20 md:py-28">
+          <div className="grid md:grid-cols-2 gap-10 items-center">
+            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+              <Pill>Regulatory-First Consulting</Pill>
+              <h1 className="mt-4 text-4xl md:text-5xl font-extrabold leading-tight text-[#0B1739]">
+                Rare Diseases. Niche Biologics. <span className="text-[#1B4B9C]">Synthetic Biology.</span>
+              </h1>
+              <p className="mt-4 text-lg text-slate-600 max-w-xl">
+                Innovative Regulatory Science Group (IRSG) accelerates approvals, reduces risk, and drives compliance — powered by our proprietary platform, <span className="font-semibold text-[#1B4B9C]">RegPulse</span>.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <PrimaryButton variant="green" onClick={() => onNavigate("contact")}>Work With Us</PrimaryButton>
+                <PrimaryButton variant="blue" onClick={() => onNavigate("regpulse")}>Explore RegPulse</PrimaryButton>
+              </div>
+              <div className="mt-6 flex items-center gap-6 text-sm text-slate-500">
+                <div className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-[#1E9C5C]"/> 20+ yrs expertise</div>
+                <div className="flex items-center gap-2"><Microscope className="h-4 w-4 text-[#1B4B9C]"/> FDA/EMA/MHRA</div>
+                <div className="flex items-center gap-2"><Users className="h-4 w-4 text-[#1E9C5C]"/> WMBE Certified</div>
+              </div>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.1 }}>
+              <div className="relative">
+                <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-[#1E9C5C]/10 to-[#1B4B9C]/10 blur-2xl"/>
+                <div className="relative rounded-3xl border border-slate-200 bg-white shadow-2xl p-6">
+                  <DashboardMock />
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </Container>
+      </section>
+
+      {/* Services preview */}
+      <section className="py-16 md:py-24 bg-[#0B1739] text-white">
+        <Container>
+          <SectionTitle kicker="Services" title="From Idea to Approval — We've Got You Covered" subtitle={"Startup packages, strategic consulting, and fractional leadership. Embedded support with the speed and rigor regulators expect."} />
+          <div className="grid md:grid-cols-3 gap-6">
+            <ServiceCard icon={<FlaskConical className="h-6 w-6"/>} title="Startup Regulatory Packages" desc="Gap assessments, IND/CTA prep, compliance roadmaps for early teams." />
+            <ServiceCard icon={<ShieldCheck className="h-6 w-6"/>} title="Strategic Regulatory Consulting" desc="Global submissions, orphan drug designations, FDA/EMA interactions." />
+            <ServiceCard icon={<Users className="h-6 w-6"/>} title="Fractional RA Leadership" desc="Embedded experts for trials, inspection readiness, and scale-up." />
+          </div>
+          <div className="mt-8 text-center">
+            <PrimaryButton variant="white" onClick={() => onNavigate("services")}>Explore Services</PrimaryButton>
+          </div>
+        </Container>
+      </section>
+
+      {/* RegPulse highlight */}
+      <section className="py-16 md:py-24 bg-white">
+        <Container>
+          <div className="grid md:grid-cols-2 gap-10 items-center">
+            <div>
+              <SectionTitle kicker="Platform" title="Meet RegPulse — Your Regulatory Command Center" subtitle="Automated regulatory intelligence, predictive insights, and compliance dashboards. Built for biotech startups, rare disease innovators, and synbio pioneers." align="left"/>
+              <div className="flex flex-wrap gap-3 mt-4">
+                <FeaturePill icon={<LineChart className="h-4 w-4"/>} text="Predictive Insights"/>
+                <FeaturePill icon={<Cpu className="h-4 w-4"/>} text="AI‑Assisted Monitoring"/>
+                <FeaturePill icon={<BookOpenText className="h-4 w-4"/>} text="Knowledge Hub"/>
+              </div>
+              <div className="mt-6">
+                <PrimaryButton variant="green" onClick={() => onNavigate("regpulse")}>Discover RegPulse</PrimaryButton>
+              </div>
+            </div>
+            <div>
+              <div className="rounded-3xl border border-slate-200 bg-white shadow-xl p-6">
+                <RegPulseMock />
+              </div>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* Industries */}
+      <section className="py-16 md:py-24 bg-[#F5F7FA]">
+        <Container>
+          <SectionTitle kicker="Industries" title="Focused Where It Matters Most" />
+          <div className="grid sm:grid-cols-2 md:grid-cols-5 gap-4">
+            <IndustryCard label="Rare Disease Innovators"/>
+            <IndustryCard label="Biologics Developers"/>
+            <IndustryCard label="Synthetic Biology Startups"/>
+            <IndustryCard label="Academic Spinouts"/>
+            <IndustryCard label="MedTech & Diagnostics"/>
+          </div>
+        </Container>
+      </section>
+
+      {/* Insights preview */}
+      <section className="py-16 md:py-24 bg-white">
+        <Container>
+          <SectionTitle kicker="Insights" title="Insights that Drive Decisions" subtitle="Short case studies, practical guides, and monthly RegPulse updates."/>
+          <div className="grid md:grid-cols-3 gap-6">
+            <InsightCard title="How IRSG Accelerated a Rare Disease IND" />
+            <InsightCard title="Top 5 FDA Questions in SynBio Submissions" />
+            <InsightCard title="RegPulse Insights: October 2025" />
+          </div>
+          <div className="mt-8 text-center">
+            <PrimaryButton variant="blue" onClick={() => onNavigate("insights")}>Read More</PrimaryButton>
+          </div>
+        </Container>
+      </section>
+    </main>
+  );
+}
+
+// SERVICES PAGE
+function Services({ onNavigate }) {
+  const packages = [
+    {
+      icon: <FlaskConical className="h-6 w-6"/>,
+      title: "Startup Regulatory Packages",
+      bullets: [
+        "Regulatory gap analysis & roadmap",
+        "IND/CTA pre-sub planning",
+        "Compliance checklist & SOP starter set",
+      ],
+    },
+    {
+      icon: <ShieldCheck className="h-6 w-6"/>,
+      title: "Strategic Regulatory Consulting",
+      bullets: [
+        "Global submissions (IND, BLA, NDA, CTA)",
+        "Orphan Drug Designation & rare disease pathways",
+        "FDA/EMA meeting prep & briefing packages",
+      ],
+    },
+    {
+      icon: <Users className="h-6 w-6"/>,
+      title: "Fractional Regulatory Leadership",
+      bullets: [
+        "Embedded RA/QA leadership",
+        "Inspection readiness & audit support",
+        "Cross‑functional governance & training",
+      ],
+    },
+  ];
+
+  return (
+    <section className="py-16 md:py-24 bg-white">
+      <Container>
+        <SectionTitle kicker="Services" title="From Idea to Approval — We’ve Got You Covered" subtitle="Choose a clear path: startup packages, strategic projects, or embedded leadership."/>
+        <div className="grid md:grid-cols-3 gap-6">
+          {packages.map((p) => (
+            <div key={p.title} className="rounded-3xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition bg-white">
+              <div className="flex items-center gap-3 text-[#1B4B9C]">{p.icon}<h3 className="text-lg font-bold">{p.title}</h3></div>
+              <ul className="mt-4 space-y-2 text-slate-600">
+                {p.bullets.map((b) => (
+                  <li key={b} className="flex items-start gap-2"><CheckCircle2 className="h-5 w-5 text-[#1E9C5C] mt-0.5"/> <span>{b}</span></li>
+                ))}
+              </ul>
+              <div className="mt-6">
+                <PrimaryButton variant="green" onClick={() => onNavigate("contact")}>Book a Strategy Call</PrimaryButton>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Container>
+    </section>
+  );
+}
+
+// REGPULSE PAGE
+function RegPulse() {
+  const features = [
+    { icon: <LineChart className="h-6 w-6"/>, title: "Predictive Insights", desc: "AI‑assisted trend analysis on guidance, queries, and timelines." },
+    { icon: <Cpu className="h-6 w-6"/>, title: "Automated Monitoring", desc: "Track FDA, EMA, MHRA, Health Canada updates in one feed." },
+    { icon: <Users className="h-6 w-6"/>, title: "Team Collaboration", desc: "Assign tasks, share alerts, and keep RA, QA, and clinical aligned." },
+    { icon: <BookOpenText className="h-6 w-6"/>, title: "Knowledge Hub", desc: "Curated checklists, templates, and regulator-ready briefs." },
+  ];
+
+  return (
+    <main>
+      <section className="py-16 md:py-24 bg-gradient-to-br from-white via-[#F5F7FA] to-white">
+        <Container>
+          <SectionTitle kicker="Platform" title="RegPulse: Real‑Time Regulatory Intelligence" subtitle="Stay ahead of regulators with automated insights, predictive analytics, and compliance dashboards — built for startups, rare disease innovators, and synbio pioneers." />
+          <div className="grid md:grid-cols-2 gap-10 items-center">
+            <div className="rounded-3xl border border-slate-200 bg-white shadow-xl p-6">
+              <RegPulseMock />
+            </div>
+            <div>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {features.map((f) => (
+                  <div key={f.title} className="rounded-2xl border border-slate-200 p-4 bg-white">
+                    <div className="flex items-center gap-2 text-[#1B4B9C]">{f.icon}<h4 className="font-bold">{f.title}</h4></div>
+                    <p className="mt-2 text-slate-600 text-sm">{f.desc}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-6 flex gap-3">
+                <PrimaryButton variant="green">Request a Demo</PrimaryButton>
+                <PrimaryButton variant="blue">Join Early Access</PrimaryButton>
+              </div>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* Pricing */}
+      <section className="py-16 md:py-24 bg-white">
+        <Container>
+          <SectionTitle kicker="Pricing" title="Early Access Program" subtitle="Test drive RegPulse with startup‑friendly options, then scale with Pro or Enterprise." />
+          <div className="grid md:grid-cols-3 gap-6">
+            <PricingCard tier="Starter" price="Free (Beta)" highlight="bg-white" features={["Curated alerts","1 user","Basic dashboard"]} />
+            <PricingCard tier="Pro" price="$1,500/mo" highlight="ring-2 ring-[#1B4B9C]" features={["Unlimited users","Full dashboards","Predictive analytics","Collaboration tools"]} popular />
+            <PricingCard tier="Enterprise" price="Custom" highlight="bg-white" features={["White‑glove onboarding","Custom integrations","Consulting add‑on"]} />
+          </div>
+        </Container>
+      </section>
+    </main>
+  );
+}
+
+// INSIGHTS PAGE
+function Insights() {
+  return (
+    <section className="py-16 md:py-24 bg-white">
+      <Container>
+        <SectionTitle kicker="Insights" title="Insights that Drive Decisions" subtitle="Case studies, practical guides, and monthly RegPulse updates."/>
+        <div className="grid md:grid-cols-3 gap-6">
+          <InsightCard title="How IRSG Accelerated a Rare Disease IND" />
+          <InsightCard title="Top 5 FDA Questions in Synthetic Biology Submissions" />
+          <InsightCard title="RegPulse Insights: October 2025" />
+        </div>
+      </Container>
+    </section>
+  );
+}
+
+// CONTACT PAGE
+function Contact() {
+  return (
+    <section className="py-16 md:py-24 bg-[#F5F7FA]">
+      <Container>
+        <SectionTitle kicker="Contact" title="Your Path to Approval Starts Here" subtitle="Tell us about your program. We'll respond within one business day." />
+        <div className="grid md:grid-cols-2 gap-8">
+          <form className="rounded-3xl bg-white p-6 border border-slate-200 shadow-sm space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-700">Name</label>
+              <input className="mt-1 w-full rounded-xl border-slate-300 focus:border-[#1B4B9C] focus:ring-[#1B4B9C]" placeholder="Your full name"/>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700">Email</label>
+                <input className="mt-1 w-full rounded-xl border-slate-300 focus:border-[#1B4B9C] focus:ring-[#1B4B9C]" placeholder="name@company.com"/>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700">Company</label>
+                <input className="mt-1 w-full rounded-xl border-slate-300 focus:border-[#1B4B9C] focus:ring-[#1B4B9C]" placeholder="Company name"/>
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700">How can we help?</label>
+              <textarea rows={5} className="mt-1 w-full rounded-xl border-slate-300 focus:border-[#1B4B9C] focus:ring-[#1B4B9C]" placeholder="Tell us about your product, timeline, and goals."/>
+            </div>
+            <div className="flex items-center gap-3">
+              <PrimaryButton variant="green">Send Message</PrimaryButton>
+              <div className="text-sm text-slate-600 flex items-center gap-2"><CalendarCheck2 className="h-4 w-4"/> Or reach out directly: <a href="mailto:Leona@tbrexa.com" className="underline text-[#1B4B9C]">Leona@tbrexa.com</a></div>
+            </div>
+          </form>
+          <div className="rounded-3xl bg-white p-6 border border-slate-200 shadow-sm">
+            <h3 className="text-xl font-bold text-[#0B1739]">Contact Details</h3>
+            <div className="mt-4 space-y-3 text-slate-700">
+              <p className="flex items-center gap-2"><Mail className="h-5 w-5 text-[#1B4B9C]"/> Leona@tbrexa.com</p>
+              <p className="flex items-center gap-2"><Phone className="h-5 w-5 text-[#1E9C5C]"/> (xxx) xxx‑xxxx</p>
+              <p className="flex items-center gap-2"><Building2 className="h-5 w-5 text-[#1B4B9C]"/> Massachusetts, USA</p>
+            </div>
+            <div className="mt-6 p-4 rounded-2xl bg-[#E8F0FB] text-[#0B1739]">
+              <p className="font-semibold">Supplier Diversity</p>
+              <p className="text-sm">IRSG is a woman- and minority‑owned business (WMBE) and welcomes opportunities through supplier diversity programs.</p>
+            </div>
+          </div>
+        </div>
+      </Container>
+    </section>
+  );
+}
+
+// REUSABLE CARDS & MOCKS
+const ServiceCard = ({ icon, title, desc }) => (
+  <div className="rounded-3xl border border-slate-200 p-6 bg-white/10 backdrop-blur shadow-sm hover:shadow-md transition">
+    <div className="flex items-center gap-3 text-white">{icon}<h3 className="text-lg font-bold">{title}</h3></div>
+    <p className="mt-3 text-slate-200">{desc}</p>
+  </div>
+);
+
+const IndustryCard = ({ label }) => (
+  <div className="rounded-2xl bg-white border border-slate-200 px-4 py-6 text-center font-semibold text-[#0B1739] shadow-sm">{label}</div>
+);
+
+const InsightCard = ({ title }) => (
+  <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition">
+    <div className="h-36 rounded-xl bg-gradient-to-br from-[#E8F7F0] to-[#E8F0FB] mb-4"/>
+    <h4 className="font-bold text-[#0B1739]">{title}</h4>
+    <p className="mt-2 text-sm text-slate-600">Brief summary of the result and key lessons learned for teams navigating regulators.</p>
+    <div className="mt-4">
+      <button className="text-[#1B4B9C] font-semibold hover:underline">Read more →</button>
+    </div>
+  </div>
+);
+
+const FeaturePill = ({ icon, text }) => (
+  <span className="inline-flex items-center gap-2 rounded-full bg-[#F1F6FF] text-[#0B1739] px-3 py-1 text-sm font-medium border border-[#D9E4FF]">{icon}{text}</span>
+);
+
+const PricingCard = ({ tier, price, features, popular = false, highlight = "bg-white" }) => (
+  <div className={`rounded-3xl border border-slate-200 p-6 shadow-sm ${highlight} relative`}>
+    {popular && <span className="absolute -top-3 right-4 bg-[#1B4B9C] text-white text-xs font-semibold px-2 py-1 rounded-full shadow">Most Popular</span>}
+    <h4 className="text-lg font-bold text-[#0B1739]">{tier}</h4>
+    <p className="mt-1 text-2xl font-extrabold text-[#1E9C5C]">{price}</p>
+    <ul className="mt-4 space-y-2 text-slate-600">
+      {features.map((f) => (
+        <li key={f} className="flex items-start gap-2"><CheckCircle2 className="h-5 w-5 text-[#1E9C5C] mt-0.5"/> <span>{f}</span></li>
+      ))}
+    </ul>
+    <div className="mt-6">
+      <PrimaryButton variant="blue">Choose {tier}</PrimaryButton>
+    </div>
+  </div>
+);
+
+const DashboardMock = () => (
+  <div>
+    <div className="flex items-center justify-between">
+      <div className="flex items-center gap-2">
+        <div className="h-8 w-8 rounded-xl bg-[#E8F7F0] grid place-items-center text-[#1E9C5C]"><Microscope className="h-4 w-4"/></div>
+        <div>
+          <p className="text-xs text-slate-500">Program</p>
+          <p className="text-sm font-semibold">Orphan IND — mAb‑RDX01</p>
+        </div>
+      </div>
+      <Pill>On Track</Pill>
+    </div>
+    <div className="mt-6 grid sm:grid-cols-3 gap-4">
+      {["FDA Qs","EMA Qs","Health Canada"].map((h) => (
+        <div key={h} className="rounded-2xl border border-slate-200 p-4">
+          <p className="text-xs text-slate-500">Upcoming</p>
+          <p className="text-sm font-semibold text-[#0B1739]">{h}</p>
+          <div className="mt-3 h-2 rounded bg-[#E8F0FB]"><div className="h-2 rounded bg-[#1B4B9C] w-3/4"/></div>
+        </div>
+      ))}
+    </div>
+    <div className="mt-6 grid sm:grid-cols-2 gap-4">
+      <div className="rounded-2xl border border-slate-200 p-4">
+        <p className="text-xs text-slate-500">Risk Flags</p>
+        <div className="mt-2 space-y-2">
+          {["CMC comparability","DS stability","First‑in‑Human design"].map((r, i) => (
+            <div key={r} className="flex items-center gap-2 text-sm">
+              <span className={`h-2.5 w-2.5 rounded-full ${i === 0 ? "bg-amber-500" : "bg-emerald-500"}`}></span>
+              <span>{r}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="rounded-2xl border border-slate-200 p-4">
+        <p className="text-xs text-slate-500">Timeline</p>
+        <div className="mt-2 h-24 rounded-xl bg-gradient-to-r from-[#E8F7F0] to-[#E8F0FB] grid place-items-center text-sm text-[#0B1739]">Gantt preview</div>
+      </div>
+    </div>
+  </div>
+);
+
+const RegPulseMock = () => (
+  <div>
+    <div className="flex items-center justify-between">
+      <div className="flex items-center gap-2">
+        <div className="h-8 w-8 rounded-xl bg-[#E8F0FB] grid place-items-center text-[#1B4B9C]"><LineChart className="h-4 w-4"/></div>
+        <div>
+          <p className="text-xs text-slate-500">Regulatory Feed</p>
+          <p className="text-sm font-semibold">Global Guidance Tracker</p>
+        </div>
+      </div>
+      <Pill>Live</Pill>
+    </div>
+    <div className="mt-4 space-y-2">
+      {["FDA updates: CMC Q&A (v2)", "EMA: ATMP guideline revision", "MHRA: eCTD v4 pilot"].map((t) => (
+        <div key={t} className="rounded-xl border border-slate-200 p-3 flex items-center justify-between">
+          <span className="text-sm text-[#0B1739]">{t}</span>
+          <button className="text-[#1B4B9C] text-sm font-semibold hover:underline">Open</button>
+        </div>
+      ))}
+    </div>
+    <div className="mt-6 grid sm:grid-cols-3 gap-3">
+      {["Alerts","Dashboards","Teams"].map((k) => (
+        <div key={k} className="rounded-xl bg-gradient-to-br from-[#E8F7F0] to-[#E8F0FB] h-20 grid place-items-center text-sm font-semibold text-[#0B1739]">{k}</div>
+      ))}
+    </div>
+  </div>
+);
+
+// FOOTER
+function Footer() {
+  return (
+    <footer className="mt-10 border-t border-slate-200 bg-white">
+      <Container className="py-10 grid md:grid-cols-4 gap-8 text-sm">
+        <div>
+          <div className="flex items-center gap-2">
+            <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-[#1E9C5C] to-[#1B4B9C] grid place-items-center">
+              <Rocket className="h-4 w-4 text-white"/>
+            </div>
+            <span className="font-extrabold text-[#0B1739]">IRSG</span>
+          </div>
+          <p className="mt-3 text-slate-600">Innovative Regulatory Science Group — regulatory‑first consulting for rare diseases, niche biologics, and synthetic biology.</p>
+        </div>
+        <div>
+          <p className="font-semibold text-[#0B1739]">Company</p>
+          <ul className="mt-3 space-y-2 text-slate-600">
+            <li><a className="hover:underline" href="#">About</a></li>
+            <li><a className="hover:underline" href="#">Careers</a></li>
+            <li><a className="hover:underline" href="#">Supplier Diversity</a></li>
+          </ul>
+        </div>
+        <div>
+          <p className="font-semibold text-[#0B1739]">Solutions</p>
+          <ul className="mt-3 space-y-2 text-slate-600">
+            <li>Consulting Services</li>
+            <li>RegPulse Platform</li>
+            <li>Training & Workshops</li>
+          </ul>
+        </div>
+        <div>
+          <p className="font-semibold text-[#0B1739]">Contact</p>
+          <ul className="mt-3 space-y-2 text-slate-600">
+            <li>Massachusetts, USA</li>
+            <li><a className="hover:underline" href="mailto:Leona@tbrexa.com">Leona@tbrexa.com</a></li>
+          </ul>
+        </div>
+      </Container>
+      <div className="border-t border-slate-200">
+        <Container className="py-4 flex items-center justify-between text-xs text-slate-500">
+          <span>© {new Date().getFullYear()} IRSG — All rights reserved.</span>
+          <div className="flex gap-4">
+            <a href="#" className="hover:underline">Privacy</a>
+            <a href="#" className="hover:underline">Terms</a>
+          </div>
+        </Container>
+      </div>
+    </footer>
+  );
+}
